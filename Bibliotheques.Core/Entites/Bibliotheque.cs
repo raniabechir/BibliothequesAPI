@@ -1,4 +1,6 @@
-﻿namespace Bibliotheques.Data
+﻿
+
+namespace Bibliotheques.Core.Entites
 {
     public class Bibliotheque
     {

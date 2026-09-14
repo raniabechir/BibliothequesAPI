@@ -9,6 +9,7 @@ namespace Bibliotheques.Core.Entites
         public string Nom { get; set; } = "";
 
         public string Adresse { get; set; } = "";
+        public int Capacite;
 
     }
 }

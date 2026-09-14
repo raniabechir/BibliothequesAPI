@@ -1,6 +1,46 @@
-@Bibliotheques_HostAddress = http://localhost:5121
+@Bibliotheques_HostAddress = http://localhost:5007
 
-GET {{Bibliotheques_HostAddress}}/weatherforecast/
+### GET - Toutes les bibliothèques
+GET {{Bibliotheques_HostAddress}}/bibliotheques
+Accept: application/json
+
+###
+
+### GET - Bibliothèque par ID
+GET {{Bibliotheques_HostAddress}}/bibliotheques/1
+Accept: application/json
+
+###
+
+### POST - Ajouter une bibliothèque
+POST {{Bibliotheques_HostAddress}}/bibliotheques
+Content-Type: application/json
+
+{
+    "nom": "Harry Potter",
+    "adresse": "Section C"
+}
+
+###
+
+### PUT - Modifier une bibliothèque
+PUT {{Bibliotheques_HostAddress}}/bibliotheques/1
+Content-Type: application/json
+
+{
+    "nom": "Le Petit Prince",
+    "adresse": "Section D"
+}
+
+###
+
+### DELETE - Supprimer une bibliothèque
+DELETE {{Bibliotheques_HostAddress}}/bibliotheques/2
+
+###
+
+### GET - Filtrer
+GET {{Bibliotheques_HostAddress}}/bibliotheques/filtre?nom=Harry
 Accept: application/json
 
 ###

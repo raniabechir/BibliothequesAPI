@@ -1,9 +1,11 @@
 ﻿using Bibliotheques.Core.Entites;
+using Bibliotheques.Core.Interfaces;
+
 
 
 namespace Bibliotheques.Data
 {
-    public class DepotBibliotheques
+    public class DepotBibliotheques : IDepotBibliotheque
     {
         private List<Bibliotheque> bibliotheques = BibliothequeDonnees.bibliotheques;
         public List<Bibliotheque> ObtenirToutes()
@@ -17,11 +19,12 @@ namespace Bibliotheques.Data
         }
         public void Ajouter(Bibliotheque bibliotheque)
         {
+            bibliotheque.Id = bibliotheques.Max(b => b.Id) + 1;
             bibliotheques.Add(bibliotheque);
         }
         public void Modifier(Bibliotheque bibliotheque)
         {
-            int index = bibliotheques.FindIndex(b => b.Id = bibliotheque.Id);
+            int index = bibliotheques.FindIndex(b => b.Id == bibliotheque.Id);
 
             if (index != -1)
             {

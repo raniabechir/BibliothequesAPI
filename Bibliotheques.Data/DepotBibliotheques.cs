@@ -10,7 +10,7 @@ namespace Bibliotheques.Data
         private List<Bibliotheque> bibliotheques = BibliothequeDonnees.bibliotheques;
         public List<Bibliotheque> ObtenirToutes()
         {
-            return bibliotheques;
+            return BibliothequeDonnees.bibliotheques;
         }
 
         public Bibliotheque? ObtenirParId(int id)

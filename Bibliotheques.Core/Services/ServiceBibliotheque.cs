@@ -1,4 +1,5 @@
 ﻿using Bibliotheques.Core.Entites;
+using Bibliotheques.Core.Exceptions;
 using Bibliotheques.Core.Interfaces;
 
 
@@ -13,22 +14,65 @@ namespace Bibliotheques.Core.Services
             m_depotBibliotheque = depot;
         }
 
-        public List<Bibliotheque> Lister(string? nom = null, int? page = null)
+        public List<Bibliotheque> Lister(string? nom = null)
         {
-            return m_depotBibliotheque.ObtenirToutes();
+            List<Bibliotheque> bibliotheques = m_depotBibliotheque.ObtenirToutes();
+
+            if (!string.IsNullOrEmpty(nom))
+            {
+                bibliotheques = bibliotheques
+                    .Where(b => b.Nom.Contains(nom, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            return bibliotheques;
         }
-        public Bibliotheque Obtenir(int id)
+        public Bibliotheque? Obtenir(int id)
         {
             return m_depotBibliotheque.ObtenirParId(id);
         }
 
         public void Creer(Bibliotheque bibliotheque)
         {
+            if (string.IsNullOrWhiteSpace(bibliotheque.Adresse))
+            {
+                throw new AdresseRequiseException();
+            }
+
+            if (string.IsNullOrWhiteSpace(bibliotheque.Nom) ||
+                bibliotheque.Nom.Length < 2 ||
+                bibliotheque.Nom.Length > 100)
+            {
+                throw new NomInvalideException(bibliotheque.Nom);
+            }
+
+
+            if (bibliotheque.Capacite < 1 || bibliotheque.Capacite > 5000)
+            {
+                throw new CapaciteInvalideException(bibliotheque.Capacite);
+            }
             m_depotBibliotheque.Ajouter(bibliotheque);
         }
 
         public void Modifier(Bibliotheque bibliotheque)
         {
+            if (string.IsNullOrWhiteSpace(bibliotheque.Adresse))
+            {
+                throw new AdresseRequiseException();
+            }
+
+            if (string.IsNullOrWhiteSpace(bibliotheque.Nom) ||
+                bibliotheque.Nom.Length < 2 ||
+                bibliotheque.Nom.Length > 100)
+            {
+                throw new NomInvalideException(bibliotheque.Nom);
+            }
+
+            if (bibliotheque.Capacite < 1 || bibliotheque.Capacite > 5000)
+            {
+                throw new CapaciteInvalideException(bibliotheque.Capacite);
+            }
+
             m_depotBibliotheque.Modifier(bibliotheque);
         }
 

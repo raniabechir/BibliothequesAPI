@@ -1,3 +1,4 @@
+using Bibliotheques.Api;
 using Bibliotheques.Api.EndPoints;
 using Bibliotheques.Core.Interfaces;
 using Bibliotheques.Core.Services;
@@ -11,21 +12,20 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IServiceBibliotheque, ServiceBibliotheque>();
 builder.Services.AddScoped<IDepotBibliotheque, DepotBibliotheques>();
+
+builder.Services.AddExceptionHandler<GestionnaireExceptionsGlobal>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+//app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+app.MapOpenApi();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseExceptionHandler();
+
 app.MapBibliothequeEndpoints();
 
 app.Run();

@@ -29,3 +29,7 @@ app.UseExceptionHandler();
 app.MapBibliothequeEndpoints();
 
 app.Run();
+
+public partial class Program
+{
+}

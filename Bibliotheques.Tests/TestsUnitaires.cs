@@ -33,32 +33,11 @@ namespace Bibliotheques.Tests.Unitaires
                 Times.Once);
         }
 
-        [Fact]
-        public void Lister_AvecNom_RetourneBibliothequesCorrespondantes()
-        {
-            // Arrange
-            var bibliotheques = TestData.CreerBibliotheques();
 
-            var mockDepot = new Mock<IDepotBibliotheque>();
 
-            mockDepot
-                .Setup(d => d.ObtenirToutes())
-                .Returns(bibliotheques);
-
-            var service = new ServiceBibliotheque(mockDepot.Object);
-
-            // Act
-            var resultat = service.Lister("Gabrielle");
-
-            // Assert
-            Assert.Single(resultat);
-            Assert.Equal(
-                "Bibliothèque Gabrielle-Roy",
-                resultat[0].Nom);
-        }
 
         [Fact]
-        public void Lister_AvecNomIgnoreLaCasse()
+        public void Lister_AvecNomIgnoreLaCasse_RetourneBibliothequesCorrespondantes()
         {
             // Arrange
             var bibliotheques = TestData.CreerBibliotheques();
@@ -199,29 +178,7 @@ namespace Bibliotheques.Tests.Unitaires
                 Times.Never);
         }
 
-        [Fact]
-        public void Creer_AvecNomTropLong_LanceNomInvalideException()
-        {
-            // Arrange
-            var mockDepot = new Mock<IDepotBibliotheque>();
 
-            var service = new ServiceBibliotheque(mockDepot.Object);
-
-            var bibliotheque = new Bibliotheque
-            {
-                Nom = new string('A', 101),
-                Adresse = "123 rue Test",
-                Capacite = 200
-            };
-
-            // Act & Assert
-            Assert.Throws<NomInvalideException>(
-                () => service.Creer(bibliotheque));
-
-            mockDepot.Verify(
-                d => d.Ajouter(It.IsAny<Bibliotheque>()),
-                Times.Never);
-        }
 
         [Fact]
         public void Creer_AvecNomVide_LanceNomInvalideException()

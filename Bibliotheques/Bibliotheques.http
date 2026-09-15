@@ -1,4 +1,4 @@
-@Bibliotheques_HostAddress = http://localhost:5007
+@Bibliotheques_HostAddress = http://localhost:5121
 
 ### GET - Toutes les bibliothèques
 GET {{Bibliotheques_HostAddress}}/bibliotheques
@@ -17,8 +17,9 @@ POST {{Bibliotheques_HostAddress}}/bibliotheques
 Content-Type: application/json
 
 {
-    "nom": "Harry Potter",
-    "adresse": "Section C"
+    "nom": "Bibliothèque de Limoilou",
+    "adresse": "801, 3e Avenue",
+    "capacite": 20000
 }
 
 ###
@@ -28,8 +29,9 @@ PUT {{Bibliotheques_HostAddress}}/bibliotheques/1
 Content-Type: application/json
 
 {
-    "nom": "Le Petit Prince",
-    "adresse": "Section D"
+    "nom": "Bibliothèque des Étoiles",
+    "adresse": "10, rue des Érables",
+    "capacite": 150
 }
 
 ###
@@ -40,7 +42,7 @@ DELETE {{Bibliotheques_HostAddress}}/bibliotheques/2
 ###
 
 ### GET - Filtrer
-GET {{Bibliotheques_HostAddress}}/bibliotheques/filtre?nom=Harry
+GET {{Bibliotheques_HostAddress}}/bibliotheques/filtre?nom=
 Accept: application/json
 
 ###

@@ -2,9 +2,9 @@
 
 namespace Bibliotheques.Core.Exceptions
 {
-    public class AdresseRequiseException : ValidationException
+    public class ArrondisementRequiseException : ValidationException
     {
-        public AdresseRequiseException()
+        public ArrondisementRequiseException()
             : base("Adresse", "L'adresse est requise et ne peut pas être vide.") { }
     }
 }

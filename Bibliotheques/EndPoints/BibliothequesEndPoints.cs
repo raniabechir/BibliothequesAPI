@@ -1,5 +1,6 @@
 ﻿using Bibliotheques.Api.Dtos;
 using Bibliotheques.Core.Entites;
+using Bibliotheques.Core.Exceptions;
 using Bibliotheques.Core.Interfaces;
 
 
@@ -48,12 +49,20 @@ namespace Bibliotheques.Api.EndPoints
             {
                 Bibliotheque bibliotheque = dto.VersEntite();
 
-                service.Creer(bibliotheque);
+                try
+                {
+                    service.Creer(bibliotheque);
 
-                return Results.Created(
-                    $"/bibliotheques/{bibliotheque.Id}",
-                    new BibliothequeDTO(bibliotheque)
-                );
+                    return Results.Created(
+                        $"/bibliotheques/{bibliotheque.Id}",
+                        new BibliothequeDTO(bibliotheque)
+                    );
+                }
+                catch (ArrondissementDejaUtiliseException)
+                {
+                    return Results.Conflict(
+                        "Une bibliothèque existe déjà dans cet arrondissement.");
+                }
             });
 
             // PUT
@@ -67,7 +76,7 @@ namespace Bibliotheques.Api.EndPoints
                 }
 
                 currentBiblio.Nom = updatedBiblio.Nom;
-                currentBiblio.Adresse = updatedBiblio.Adresse;
+                currentBiblio.Arrondissement = updatedBiblio.Arrondissement;
                 currentBiblio.Capacite = updatedBiblio.Capacite;
                 service.Modifier(currentBiblio);
 

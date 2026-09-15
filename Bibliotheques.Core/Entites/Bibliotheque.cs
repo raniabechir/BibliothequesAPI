@@ -8,7 +8,7 @@ namespace Bibliotheques.Core.Entites
 
         public string Nom { get; set; } = "";
 
-        public string Adresse { get; set; } = "";
+        public string Arrondissement { get; set; } = "";
 
         public int Capacite;
 
@@ -19,7 +19,7 @@ namespace Bibliotheques.Core.Entites
 
 
             Nom = nom;
-            Adresse = adresse;
+            Arrondissement = adresse;
             Capacite = capacite;
         }
 

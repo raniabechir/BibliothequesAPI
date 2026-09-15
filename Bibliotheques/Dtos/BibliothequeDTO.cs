@@ -9,7 +9,7 @@ namespace Bibliotheques.Api.Dtos
         public string Nom { get; set; }
 
         [Required]
-        public string Adresse { get; set; }
+        public string Arrondissement { get; set; }
 
         [Range(1, 5000, ErrorMessage = "La capacité doit être comprise entre 1 et 5000.")]
         public int Capacite { get; set; }
@@ -20,13 +20,13 @@ namespace Bibliotheques.Api.Dtos
         public BibliothequeDTO(Bibliotheque bibliotheque)
         {
             Nom = bibliotheque.Nom;
-            Adresse = bibliotheque.Adresse;
+            Arrondissement = bibliotheque.Arrondissement;
             Capacite = bibliotheque.Capacite;
         }
 
         public Bibliotheque VersEntite()
         {
-            return new Bibliotheque(Nom, Adresse, Capacite);
+            return new Bibliotheque(Nom, Arrondissement, Capacite);
         }
     }
 }

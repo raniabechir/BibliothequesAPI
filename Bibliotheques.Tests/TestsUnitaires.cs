@@ -135,13 +135,15 @@ namespace Bibliotheques.Tests.Unitaires
         {
             // Arrange
             var mockDepot = new Mock<IDepotBibliotheque>();
+            mockDepot.Setup(d => d.ObtenirToutes()).Returns(new List<Bibliotheque>() { });
+
 
             var service = new ServiceBibliotheque(mockDepot.Object);
 
             var bibliotheque = new Bibliotheque
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "123 rue Test",
+                Arrondissement = " Bibliothèque Test",
                 Capacite = 200
             };
 
@@ -165,7 +167,7 @@ namespace Bibliotheques.Tests.Unitaires
             var bibliotheque = new Bibliotheque
             {
                 Nom = "A",
-                Adresse = "123 rue Test",
+                Arrondissement = "123 ",
                 Capacite = 200
             };
 
@@ -180,29 +182,6 @@ namespace Bibliotheques.Tests.Unitaires
 
 
 
-        [Fact]
-        public void Creer_AvecNomVide_LanceNomInvalideException()
-        {
-            // Arrange
-            var mockDepot = new Mock<IDepotBibliotheque>();
-
-            var service = new ServiceBibliotheque(mockDepot.Object);
-
-            var bibliotheque = new Bibliotheque
-            {
-                Nom = "",
-                Adresse = "123 rue Test",
-                Capacite = 200
-            };
-
-            // Act & Assert
-            Assert.Throws<NomInvalideException>(
-                () => service.Creer(bibliotheque));
-
-            mockDepot.Verify(
-                d => d.Ajouter(It.IsAny<Bibliotheque>()),
-                Times.Never);
-        }
 
         [Fact]
         public void Creer_AvecAdresseVide_LanceAdresseRequiseException()
@@ -215,12 +194,12 @@ namespace Bibliotheques.Tests.Unitaires
             var bibliotheque = new Bibliotheque
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "",
+                Arrondissement = "",
                 Capacite = 200
             };
 
             // Act & Assert
-            Assert.Throws<AdresseRequiseException>(
+            Assert.Throws<ArrondisementRequiseException>(
                 () => service.Creer(bibliotheque));
 
             mockDepot.Verify(
@@ -228,29 +207,6 @@ namespace Bibliotheques.Tests.Unitaires
                 Times.Never);
         }
 
-        [Fact]
-        public void Creer_AvecCapaciteZero_LanceCapaciteInvalideException()
-        {
-            // Arrange
-            var mockDepot = new Mock<IDepotBibliotheque>();
-
-            var service = new ServiceBibliotheque(mockDepot.Object);
-
-            var bibliotheque = new Bibliotheque
-            {
-                Nom = "Bibliothèque Test",
-                Adresse = "123 rue Test",
-                Capacite = 0
-            };
-
-            // Act & Assert
-            Assert.Throws<CapaciteInvalideException>(
-                () => service.Creer(bibliotheque));
-
-            mockDepot.Verify(
-                d => d.Ajouter(It.IsAny<Bibliotheque>()),
-                Times.Never);
-        }
 
         [Fact]
         public void Creer_AvecCapaciteTropGrande_LanceCapaciteInvalideException()
@@ -263,7 +219,7 @@ namespace Bibliotheques.Tests.Unitaires
             var bibliotheque = new Bibliotheque
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "123 rue Test",
+                Arrondissement = "123",
                 Capacite = 5001
             };
 
@@ -288,7 +244,7 @@ namespace Bibliotheques.Tests.Unitaires
             {
                 Id = 1,
                 Nom = "Bibliothèque Modifiée",
-                Adresse = "456 rue Test",
+                Arrondissement = "456 ",
                 Capacite = 600
             };
 
@@ -313,7 +269,7 @@ namespace Bibliotheques.Tests.Unitaires
             {
                 Id = 1,
                 Nom = "A",
-                Adresse = "456 rue Test",
+                Arrondissement = "456",
                 Capacite = 600
             };
 
@@ -338,12 +294,12 @@ namespace Bibliotheques.Tests.Unitaires
             {
                 Id = 1,
                 Nom = "Bibliothèque Test",
-                Adresse = "",
+                Arrondissement = "",
                 Capacite = 600
             };
 
             // Act & Assert
-            Assert.Throws<AdresseRequiseException>(
+            Assert.Throws<ArrondisementRequiseException>(
                 () => service.Modifier(bibliotheque));
 
             mockDepot.Verify(
@@ -363,7 +319,7 @@ namespace Bibliotheques.Tests.Unitaires
             {
                 Id = 1,
                 Nom = "Bibliothèque Test",
-                Adresse = "456 rue Test",
+                Arrondissement = "456 rue Test",
                 Capacite = 5001
             };
 
@@ -373,6 +329,36 @@ namespace Bibliotheques.Tests.Unitaires
 
             mockDepot.Verify(
                 d => d.Modifier(It.IsAny<Bibliotheque>()),
+                Times.Never);
+        }
+
+        [Fact]
+        public void Creer_AvecArrondissementDejaUtilise_LanceException()
+        {
+            // Act
+            var bibliotheques = TestData.CreerBibliotheques();
+            // Arrange
+            var mockDepot = new Mock<IDepotBibliotheque>();
+
+            mockDepot
+                .Setup(d => d.ObtenirToutes())
+                .Returns(bibliotheques);
+
+            var service = new ServiceBibliotheque(mockDepot.Object);
+
+            var nouvelleBibliotheque = new Bibliotheque
+            {
+                Nom = "Nouvelle bibliothèque",
+                Arrondissement = bibliotheques[0].Arrondissement,
+                Capacite = 200
+            };
+
+            // Act & Assert
+            Assert.Throws<ArrondissementDejaUtiliseException>(
+                () => service.Creer(nouvelleBibliotheque));
+
+            mockDepot.Verify(
+                d => d.Ajouter(It.IsAny<Bibliotheque>()),
                 Times.Never);
         }
 

@@ -1,7 +1,6 @@
 ﻿using Bibliotheques.Api.Dtos;
 using Bibliotheques.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -76,7 +75,27 @@ namespace Bibliotheques.Tests.Integration
                 HttpStatusCode.NotFound,
                 response.StatusCode);
         }
+        [Fact]
+        public async Task PostBibliotheque_AvecArrondissementDejaUtilise_RetourneConflict()
+        {
+            ReinitialiserDonnees();
 
+            var dto = new BibliothequeDTO
+            {
+                Nom = "Nouvelle Bibliothèque",
+                Arrondissement = "Charlesbourg",
+                Capacite = 200
+            };
+
+            var response =
+                await m_client.PostAsJsonAsync(
+                    "/bibliotheques",
+                    dto);
+
+            Assert.Equal(
+                HttpStatusCode.Conflict,
+                response.StatusCode);
+        }
         [Fact]
         public async Task GetBibliotheques_AvecPagination_RetourneBonneQuantite()
         {
@@ -161,7 +180,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "123 rue Test",
+                Arrondissement = "123 ",
                 Capacite = 200
             };
 
@@ -183,7 +202,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "A",
-                Adresse = "123 rue Test",
+                Arrondissement = "123 ",
                 Capacite = 200
             };
 
@@ -205,7 +224,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "",
+                Arrondissement = "",
                 Capacite = 200
             };
 
@@ -227,7 +246,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "123 rue Test",
+                Arrondissement = "123 rue Test",
                 Capacite = 5001
             };
 
@@ -249,7 +268,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "Bibliothèque Modifiée",
-                Adresse = "456 rue Test",
+                Arrondissement = "456 ",
                 Capacite = 600
             };
 
@@ -271,7 +290,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "Bibliothèque Test",
-                Adresse = "456 rue Test",
+                Arrondissement = "456 ",
                 Capacite = 600
             };
 
@@ -293,7 +312,7 @@ namespace Bibliotheques.Tests.Integration
             var dto = new BibliothequeDTO
             {
                 Nom = "A",
-                Adresse = "456 rue Test",
+                Arrondissement = "456 ",
                 Capacite = 600
             };
 

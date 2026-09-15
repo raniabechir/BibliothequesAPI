@@ -34,9 +34,9 @@ namespace Bibliotheques.Core.Services
 
         public void Creer(Bibliotheque bibliotheque)
         {
-            if (string.IsNullOrWhiteSpace(bibliotheque.Adresse))
+            if (string.IsNullOrWhiteSpace(bibliotheque.Arrondissement))
             {
-                throw new AdresseRequiseException();
+                throw new ArrondisementRequiseException();
             }
 
             if (string.IsNullOrWhiteSpace(bibliotheque.Nom) ||
@@ -51,14 +51,26 @@ namespace Bibliotheques.Core.Services
             {
                 throw new CapaciteInvalideException(bibliotheque.Capacite);
             }
+
+            var bibliotheques = m_depotBibliotheque.ObtenirToutes();
+
+            if (bibliotheques.Any(b =>
+                b.Arrondissement.Equals(
+                    bibliotheque.Arrondissement,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new ArrondissementDejaUtiliseException();
+            }
+
+
             m_depotBibliotheque.Ajouter(bibliotheque);
         }
 
         public void Modifier(Bibliotheque bibliotheque)
         {
-            if (string.IsNullOrWhiteSpace(bibliotheque.Adresse))
+            if (string.IsNullOrWhiteSpace(bibliotheque.Arrondissement))
             {
-                throw new AdresseRequiseException();
+                throw new ArrondisementRequiseException();
             }
 
             if (string.IsNullOrWhiteSpace(bibliotheque.Nom) ||
